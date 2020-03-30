@@ -2,7 +2,7 @@
 
 Predicting up votes for news articles based on the headline, creation time, author and news category
 
-Description of files/folders:
+# Description of files/folders:
 
 1) data_preparation.py 
 
@@ -20,13 +20,13 @@ Contains the tokenized word vectors for training and testing in pickle format, a
 
 Contains the trained models
 
-Training from Scratch:
+# Training from Scratch:
 
 Step 1: Run the data_preparation.py file. This will create train, test pickle objects in the data directory.
 
 Step 2: Run the train.py with the set hyperparameters
 
-Testing using pretrained model:
+# Testing using pretrained model:
 
 Run test.py using the model saved in models directory
 

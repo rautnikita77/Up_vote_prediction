@@ -16,7 +16,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 num_epochs = 100
 emb_dim = 30
 input_size = 52 * emb_dim + 3       # max_len * embedding dim + 3
-learning_rate = 0.01
+learning_rate = 0.001
 
 
 def load_pickle(filename):

@@ -13,7 +13,6 @@ class NewsData(Dataset):
         """
         self.features = np.load(features, allow_pickle=True)
         self.labels = np.load(labels, allow_pickle=True)
-        print(self.labels.shape)
 
     def __len__(self):
         return len(self.labels)

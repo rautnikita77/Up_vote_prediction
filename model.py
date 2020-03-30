@@ -16,9 +16,9 @@ class Net(nn.Module):
         """
         super(Net, self).__init__()
         self.embedding = nn.Embedding(vocab_size, emb_dim)
-        self.fc1 = nn.Linear(input_size, 200)
-        self.fc2 = nn.Linear(200, 200)
-        self.fc3 = nn.Linear(200, 1)
+        self.fc1 = nn.Linear(input_size, 264)
+        self.fc2 = nn.Linear(264, 128)
+        self.fc3 = nn.Linear(128, 1)
 
     def forward(self, x):
         """

@@ -35,11 +35,10 @@ def load_pickle(filename):
 
 
 if __name__ == '__main__':
-    train_dataset = NewsData(features=os.path.join(root, 'x_train.pkl'), labels=os.path.join(root, 'x_test.pkl'))
+    train_dataset = NewsData(features=os.path.join(root, 'x_train.pkl'), labels=os.path.join(root, 'y_train.pkl'))
     word2idx = load_pickle(os.path.join(root, 'word2idx.pkl'))
     idx2word = load_pickle(os.path.join(root, 'idx2word.pkl'))
     vocab_size = len(word2idx.keys())
-
     train_loader = DataLoader(train_dataset, batch_size=512)
 
     # Loss and optimizer
@@ -49,7 +48,7 @@ if __name__ == '__main__':
 
     # Train the model
     for epoch in range(num_epochs):
-        total_cost = 0
+        total_cost = []
         for n, sample in enumerate(tqdm(train_loader)):
             optimizer.zero_grad()
             features, label = sample['feature'], sample['label']
@@ -57,7 +56,7 @@ if __name__ == '__main__':
             output = model(features)
             cost = loss(label, output)
             cost.backward()
-            total_cost += cost
+            total_cost.append(cost)
             optimizer.step()
             torch.cuda.empty_cache()
 
@@ -65,5 +64,5 @@ if __name__ == '__main__':
         if epoch % 10 == 0:
             torch.save(model.state_dict(), 'Models/model.pt')
 
-        print('Epoch: {}    total_cost =  {}   '.format(epoch, total_cost))
+        print('Epoch: {}    total_cost =  {}   '.format(epoch, sum(total_cost)/len(total_cost)))
     torch.save(model.state_dict(), 'Models/model.pt')

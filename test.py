@@ -5,8 +5,10 @@ import os
 from tqdm import tqdm
 from news_data import NewsData
 import torch.nn as nn
+from sklearn.metrics import r2_score
+import pickle
 
-root = ''
+root = 'data/'
 saved_model_path = 'Models/model.pt'
 
 # Device configuration
@@ -20,19 +22,21 @@ learning_rate = 0.0001
 
 if __name__ == '__main__':
 
-    test_dataset = NewsData(features=os.path.join(root, 'y_train.pkl'), labels=os.path.join(root, 'y_test.pkl'))
-    test_loader = DataLoader(test_dataset)
+    test_dataset = NewsData(features=os.path.join(root, 'x_test.pkl'), labels=os.path.join(root, 'y_test.pkl'))
+    test_loader = DataLoader(test_dataset, batch_size=512)
+    with open(os.path.join(root, 'word2idx.pkl'), 'rb') as f:
+        word2idx = pickle.load(f)
+    vocab_size = len(word2idx.keys())
     model = Net(emb_dim, input_size, vocab_size).to(device)
-    model.load_state_dict(torch.load('Model/model.pt'), map_location=device)
-
-    loss = nn.MSELoss()
+    model.load_state_dict(torch.load('Models/model.pt'))
+    model.eval()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    error = 0
+    acc = []
     with torch.no_grad():
         for n, sample in enumerate(tqdm(test_loader)):
             features, label = sample['feature'], sample['label']
             features = features.to(device)
             output = model(features)
-            error += loss(label, output)
+            acc.append(r2_score(label, output))
 
-        print('Error: {}'.format(error))
+        print('Error: {}'.format(sum(acc)/len(acc)))

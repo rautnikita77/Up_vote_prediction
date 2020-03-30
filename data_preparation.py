@@ -177,13 +177,13 @@ word2idx, idx2word = construct_word2vec(x_train_set)
 
 save_pickle(word2idx, os.path.join(root, 'word2idx.pkl'))
 save_pickle(idx2word, os.path.join(root, 'idx2word.pkl'))
+
 x_train_set = to_word_vector(x_train_set)
 x_test_set = to_word_vector(x_test_set)
 
 x_train_set = np.concatenate((x_train_set, extra_train_features), axis=1)
 x_test_set = np.concatenate((x_test_set, extra_test_features), axis=1)
-
 save_pickle(x_train_set, os.path.join(root, 'x_train.pkl'))
 save_pickle(x_test_set, os.path.join(root, 'x_test.pkl'))
-save_pickle(y_train_set, os.path.join(root, 'y_train.pkl'))
-save_pickle(y_test_set, os.path.join(root, 'y_test.pkl'))
+save_pickle(y_train_set.values, os.path.join(root, 'y_train.pkl'))
+save_pickle(y_test_set.values, os.path.join(root, 'y_test.pkl'))
